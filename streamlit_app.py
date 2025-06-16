@@ -42,7 +42,7 @@ if ingredients_list:
   ingredients_string = ''
   for fruit_chosen in ingredients_list:
     ingredients_string += fruit_chosen + ' '
-    search_on=pd_df[pd_df['FRUIT_NAME'] == fruit_chosen]
+    search_on=pd_df[pd_df['FRUIT_NAME'] == fruit_chosen]["SEARCH_ON"]
     st.text(search_on)
     search_on=search_on["SEARCH_ON"].loc[0]
     st.text(search_on)
