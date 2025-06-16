@@ -17,7 +17,7 @@ cnx = st.connection("snowflake")
 session = cnx.session()
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('SEARCH_ON'),col('FRUIT_NAME'))
 pd_df = my_dataframe.to_pandas()
-st.text(pd_df)
+#st.text(pd_df)
 ingredients_list = st.multiselect(
     "Choose up to 5 Fruit",
     my_dataframe,
@@ -30,7 +30,7 @@ if ingredients_list:
     ingredients_string = ''
     for fruit in ingredients_list:
         ingredients_string += fruit + ' '
-    st.text(ingredients_string)
+    #st.text(ingredients_string)
     my_insert_stmt = """ insert into smoothies.public.orders(ingredients, name_on_order)
             values ('""" + ingredients_string + """','"""+name_on_order+"""')"""
     submit_Button = st.button("Submit Order")
@@ -38,11 +38,12 @@ if ingredients_list:
         session.sql(my_insert_stmt).collect()
         st.success('Your Smoothie is ordered '+name_on_order, icon="✅")
 
-if ingredients_list:
+
   ingredients_string = ''
   for fruit_chosen in ingredients_list:
     ingredients_string += fruit_chosen + ' '
-    search_on=pd_df[pd_df['FRUIT_NAME'] == fruit_chosen].reset_index()
+    search_on=pd_df[pd_df['FRUIT_NAME'] == fruit_chosen]
+    st.text(search_on)
     search_on=search_on.loc[0,'SEARCH_ON']
     #st.text(search_on)
     smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/"+search_on)
